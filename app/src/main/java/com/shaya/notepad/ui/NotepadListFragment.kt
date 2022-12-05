@@ -5,29 +5,32 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.shaya.notepad.BaseApplication
 import com.shaya.notepad.R
+import com.shaya.notepad.databinding.FragmentNotepadListBinding
+import com.shaya.notepad.model.Item
+import com.shaya.notepad.ui.adapter.ItemListAdapter
+import com.shaya.notepad.ui.viewmodel.ItemViewModel
+import com.shaya.notepad.ui.viewmodel.ItemViewModelFactory
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [NotepadListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class NotepadListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private val viewModel: ItemViewModel by activityViewModels {
+        ItemViewModelFactory((activity?.application as BaseApplication).database.itemDao())
+    }
+
+    private var _binding: FragmentNotepadListBinding? = null
+    private val binding get() = _binding!!
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
@@ -35,26 +38,35 @@ class NotepadListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notepad_list, container, false)
+        _binding = FragmentNotepadListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment NotepadListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            NotepadListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val adapter = ItemListAdapter(
+            onClickListener = {
+                val action = NotepadListFragmentDirections.actionNotepadListFragmentToNotepadDetailFragment(it.id)
+                findNavController().navigate(action)
             }
+        )
+
+        viewModel.allItems.observe(this.viewLifecycleOwner){
+            it.let {
+                adapter.submitList(it)
+            }
+        }
+
+        binding.apply {
+            recyclerView.adapter = adapter
+            addFab.setOnClickListener {
+                val action = NotepadListFragmentDirections.actionNotepadListFragmentToNotepadAddFragment(getString(R.string.add_fragment_title), 0)
+                findNavController().navigate(action)
+        }
+        }
     }
+
+
 }

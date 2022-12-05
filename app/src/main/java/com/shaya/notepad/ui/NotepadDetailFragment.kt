@@ -1,60 +1,94 @@
 package com.shaya.notepad.ui
 
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.shaya.notepad.BaseApplication
 import com.shaya.notepad.R
+import com.shaya.notepad.databinding.FragmentNotepadDetailBinding
+import com.shaya.notepad.model.Item
+import com.shaya.notepad.ui.viewmodel.ItemViewModel
+import com.shaya.notepad.ui.viewmodel.ItemViewModelFactory
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [NotepadDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class NotepadDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private lateinit var item: Item
+
+    private val navigationArgs: NotepadDetailFragmentArgs by navArgs()
+
+    private var _binding: FragmentNotepadDetailBinding? = null
+    private val binding get() = _binding!!
+
+    private val viewModel: ItemViewModel by activityViewModels{
+        ItemViewModelFactory((activity?.application as BaseApplication).database.itemDao())
     }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notepad_detail, container, false)
+    _binding = FragmentNotepadDetailBinding.inflate(inflater, container, false)
+    return binding.root
+    //return inflater.inflate(R.layout.fragment_notepad_detail, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment NotepadDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            NotepadDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        val id = navigationArgs.id
+        viewModel.retrieveItem(id).observe(this.viewLifecycleOwner){selectedItem ->
+            item = selectedItem
+            bindItem(item)
+        }
     }
+
+    private fun bindItem(item:Item){
+        binding.apply{
+            titleInput.setText(item.title)
+            descriptionInput.setText(item.description)
+            descriptionInput.movementMethod = ScrollingMovementMethod()
+            deleteFab.setOnClickListener { showConfirmationDialog() }
+            updateFab.setOnClickListener {updateItem()}
+                /*val action = NotepadDetailFragmentDirections.actionNotepadDetailFragmentToNotepadAddFragment(getString(R.string.edit_fragment_title))
+                findNavController().navigate(action)*/
+
+        }
+    }
+
+    private fun showConfirmationDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(android.R.string.dialog_alert_title))
+            .setMessage(getString(R.string.delete_question))
+            .setCancelable(false)
+            .setNegativeButton(getString(R.string.no)) { _, _ -> }
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                deleteItem()
+            }
+            .show()
+    }
+
+    private fun deleteItem(){
+        viewModel.deleteItem(item)
+        findNavController().navigateUp()
+    }
+
+    private fun updateItem(){
+        val action = NotepadDetailFragmentDirections.actionNotepadDetailFragmentToNotepadAddFragment(getString(R.string.edit_fragment_title), item.id)
+        this.findNavController().navigate(action)
+    }
+
+
+
 }

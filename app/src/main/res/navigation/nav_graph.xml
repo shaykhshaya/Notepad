@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/notepadListFragment">
+
+    <fragment
+        android:id="@+id/notepadListFragment"
+        android:name="com.shaya.notepad.ui.NotepadListFragment"
+        android:label="Notes"
+        tools:layout="@layout/fragment_notepad_list" >
+        <action
+            android:id="@+id/action_notepadListFragment_to_notepadAddFragment"
+            app:destination="@id/notepadAddFragment" />
+        <action
+            android:id="@+id/action_notepadListFragment_to_notepadDetailFragment"
+            app:destination="@id/notepadDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/notepadAddFragment"
+        android:name="com.shaya.notepad.ui.NotepadAddFragment"
+        android:label="{menu_title}"
+        tools:layout="@layout/fragment_notepad_add" >
+
+        <argument
+            android:name="menu_title"
+            app:argType="string"/>
+        <argument
+            android:name="id"
+            app:argType="integer"
+            />
+        <action
+            android:id="@+id/action_notepadAddFragment_to_notepadListFragment"
+            app:destination="@id/notepadListFragment"
+            app:popUpTo="@id/notepadListFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/notepadDetailFragment"
+        android:name="com.shaya.notepad.ui.NotepadDetailFragment"
+        android:label=""
+        tools:layout="@layout/fragment_notepad_detail" >
+        <argument
+            android:name="id"
+            app:argType="integer"
+            />
+        <action
+            android:id="@+id/action_notepadDetailFragment_to_notepadListFragment"
+            app:destination="@id/notepadListFragment"
+            app:popUpTo="@id/notepadListFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_notepadDetailFragment_to_notepadAddFragment"
+            app:destination="@id/notepadAddFragment" />
+    </fragment>
+</navigation>
