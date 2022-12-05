@@ -14,6 +14,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/title_input"
+        android:textSize="24sp"
+        android:textColor="#023D6C"
+
+        android:layout_marginTop="8dp"
+        android:padding="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -22,25 +27,32 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scrollbars="vertical"
+        android:textSize="16sp"
+
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_input" />
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <Button
         android:id="@+id/update_fab"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:text="EDIT"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_update"
+        android:layout_marginTop="16dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <Button
         android:id="@+id/delete_fab"
-        android:layout_width="wrap_content"
+        android:text="DELETE"
+        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_delete"
+        style="?attr/materialButtonOutlinedStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
