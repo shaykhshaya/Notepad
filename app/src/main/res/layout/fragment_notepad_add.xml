@@ -8,51 +8,52 @@
     tools:context=".ui.NotepadAddFragment">
 
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/title_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/notepad_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/title_label"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/title_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/notepad_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:inputType="textAutoComplete"
+            android:singleLine="true" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/title_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textAutoComplete"
+    </com.google.android.material.textfield.TextInputLayout>
 
-                android:singleLine="true" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/description_label"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:hint="@string/notepad_description"
+        app:layout_constraintBottom_toTopOf="@+id/save_fab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_label">
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/description_label"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/description_input"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="16dp"
-            android:hint="@string/notepad_description"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title_label">
+            android:layout_height="wrap_content"
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/description_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine" />
+            android:inputType="textMultiLine"
+            android:textAlignment="viewStart" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/save_fab"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="SAVE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="SAVE"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

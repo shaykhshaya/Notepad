@@ -7,16 +7,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.NotepadDetailFragment">
 
-
-
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/title_input"
         android:textSize="24sp"
         android:textColor="#023D6C"
-
         android:layout_marginTop="8dp"
         android:padding="4dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,13 +24,10 @@
         android:layout_height="0dp"
         android:scrollbars="vertical"
         android:textSize="16sp"
-
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_input" />
-
 
     <Button
         android:id="@+id/update_fab"
@@ -42,7 +35,6 @@
         android:text="EDIT"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -55,11 +47,5 @@
         style="?attr/materialButtonOutlinedStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
